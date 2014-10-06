@@ -1,0 +1,16 @@
+---
+title: "Fairfax County Parcel Descriptions"
+author: "Allison O'Connor"
+date: "October 3, 2014"
+output: html_document
+---
+
+Here is some data from Fairfax County. Just a few rows of a very large file!!! This script is adapted from the one Lincoln sent me, to see if I can make changes and still have it work.
+
+
+```{r}
+temp <- read.fwf("short.txt", widths = c(276, 5, 8, 30, 7, 728, 2, 2, 4, 1, 1, 2, 4, 6, 6), col.names=c("gibberish", "number", "nothing", "street", "type", "stuff", "total.rooms", "total.bed","bath.info", "heat", "air", "num.fplcs", "yr.built", "land.info", "sqft"))
+
+str(temp)
+```
+
