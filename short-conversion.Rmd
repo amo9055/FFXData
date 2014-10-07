@@ -9,7 +9,11 @@ Here is some data from Fairfax County. Just a few rows of a very large file!!! T
 
 
 ```{r}
-temp <- read.fwf("short.txt", widths = c(276, 5, 8, 30, 7, 668, 10, 9, 10, 9, 288, 2, 2, 4, 1, 1, 2, 4, 6, 6), col.names=c("gibberish", "number", "nothing", "street", "type", "stuff", "r.sale.price", "r.sale.date", "p.sale.price", "p.sale.date", "more.stuff" "total.rooms", "total.bed","bath.info", "heat", "air", "num.fplcs", "yr.built", "land.info", "sqft"))
+temp <- read.fwf("short.txt", widths = c(276, 5, 8, 30, 7, 728, 2, 2, 4, 1, 1, 2, 4, 6, 6), col.names=c("gibberish", "number", "nothing", "street", "type", "stuff", "total.rooms", "total.bed","bath.info", "heat", "air", "num.fplcs", "yr.built", "land.info", "sqft"))
+
+str(temp)
+
+
 
 str(temp)
 ```
