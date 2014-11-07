@@ -68,8 +68,26 @@ library(ggplot2)
 
 ggplot(data = FFX_res_data,
        aes(x = decade, y = fireplaces))+
+  geom_point()
   
-  
+
+```
+
+Explore some of what the basic dot plot shows as interesting questions.
+
+```{r}
+# get total number of houses between earliest period to mid-1800s(?) and see how many fireplaces most houses had; average size; how many/few had no fireplaces. **Note: even houses with substantive changes will be included. Consider whether to go back and get addition/rennovation data to add into data frame.
+
+early_homes <- FFX_res_data %>%
+  filter(year_built < 1860)
+ggplot(data = early_homes,
+       aes(x = decade, y = sqft_living_area, size = fireplaces))+
+  geom_point()
+#What about recent homes?
+recent_homes <- FFX_res_data %>%
+  filter(year_built > 1980) %>%
+
+
 
 ```
 
