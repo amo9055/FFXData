@@ -4,16 +4,130 @@ author: "Allison O'Connor"
 date: "November 8, 2014"
 output: html_document
 ---
-
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+```
 Fireplaces are the proverbial heart of the home. Even with the development of alternate modes of cooking, heating, and lighting--three of the most critical functions of fireplaces in early America--fireplaces persist in the building of American homes. What changes happened as functions of the fireplace were replaced by other technologies, but fireplaces persisted? This study will examine natinal data from census records, where since 1940 the census bureau has asked questions about central heating, as well as local data from Fairfax County, Virginia tax records, which indicate the number of fireplaces present in homes today, where those homes were built between 1722 and 2014.
 
+Overall, the growth of houses built in Fairfax County starts in the latter half of the 20th century. This growth accompanied the transformation of Fairfax County from a rural, agricultural area, near Washington, D.C. into a major suburban enclave of the D.C. metropolitan area. Due to the exponential growth in the latter half of the 20th century, the growth in earlier centuries are somewhat obscured in the graph unless we apply a logorithmic scale to the plot.
+
 ```{r}
-
+ggplot(data = FFX_res_data,
+       aes(x = year_built))+
+  geom_histogram()+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  scale_y_log10()+
+  ggtitle("Houses built in Fairfax County")
 ```
 
-You can also embed plots, for example:
 
-```{r, echo=FALSE}
-plot(cars)
+An examination of the houses built in Fairfax County before 1900 shows a high proportion of them were built with fireplaces.  During the 18th and 19th centuries, only a few houses were built without fireplaces. With the exception of one house from the early 18th century, those few were built at the end of the 19th century.
+
+```{r}
+pre1900houses <- FFX_res_data %>%
+  filter(year_built < 1900)
+
+ggplot(data = pre1900houses,
+       aes(x = year_built))+
+  geom_histogram()+ 
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built before 1900 in Fairfax County")
 ```
 
+```{r}
+pre1900without <- houses_without_fireplaces %>%
+  filter(year_built < 1900)
+  
+ggplot(data = pre1900without,
+       aes(x = year_built))+
+  geom_histogram()+ 
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built before 1900 without fireplaces in Fairfax County")
+```
+
+```{r}
+pre1900with <- houses_with_fireplaces %>%
+  filter(year_built < 1900)
+
+ggplot(data = pre1900with,
+       aes(x = year_built))+
+  geom_histogram()+
+  scale_x_continuous(breaks=1:1900)+
+  scale_y_continuous(breaks=1:10)+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built before 1900 with fireplaces in Fairfax County")
+```
+
+The period between 1900 and 1945 shows that 
+
+```{r echo = FALSE}
+houses_1900_1945 <- FFX_res_data %>%
+  filter(year_built >= 1900) %>%
+  filter(year_built <= 1945)
+
+ggplot(data = houses_1900_1945,
+       aes(x = year_built))+
+  geom_histogram()+
+  scale_x_continuous(breaks=1:1945)
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+```
+
+```{r echo = FALSE}
+houses_1900_1945without <- houses_without_fireplaces %>%
+  filter(year_built >= 1900) %>%
+  filter(year_built <= 1945)
+  
+ggplot(data = houses_1900_1945without,
+       aes(x = year_built))+
+  geom_histogram()+
+  scale_x_continuous(breaks=1:1945)
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built between 1900 and 1945 without fireplaces in Fairfax County")
+```
+
+```{r echo = FALSE}
+houses_1900_1945with <- houses_with_fireplaces %>%
+  filter(year_built >= 1900) %>%
+  filter(year_built <= 1945)
+  
+ggplot(data = houses_1900_1945with,
+       aes(x = year_built))+
+  geom_histogram()+
+  scale_x_continuous(breaks=1:1945)
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built between 1900 and 1945 with fireplaces in Fairfax County")
+```
+
+
+
+```{r}
+post1945without <- houses_without_fireplaces %>%
+  filter(year_built >= 1945)
+
+ggplot(data = post1945without,
+       aes(x = year_built))+
+  geom_histogram()+
+  scale_x_continuous(breaks=1:2015)+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built after 1945 without fireplaces in Fairfax County")
+  
+```
+
+
+
+
+```{r}
+post1945with <- houses_with_fireplaces %>%
+  filter(year_built >= 1945)
+
+ggplot(data = post1945with,
+       aes(x = year_built))+
+  geom_histogram()+
+  scale_x_continuous(breaks=1:2015)+
+  theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ggtitle("Houses built after 1945 with fireplaces in Fairfax County")
+  
+
+```
