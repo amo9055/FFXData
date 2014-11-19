@@ -4,7 +4,7 @@ author: "Allison O'Connor"
 date: "November 8, 2014"
 output: html_document
 ---
-```{r}
+```{r message = FALSE}
 library(tidyr)
 library(dplyr)
 library(ggplot2)
@@ -16,8 +16,9 @@ Overall, the growth of houses built in Fairfax County starts in the latter half 
 ```{r}
 ggplot(data = FFX_res_data,
        aes(x = year_built))+
-  geom_histogram()+
+  geom_histogram(binwidth = 1)+
   theme(axis.text.x=element_text(angle=90, hjust=1))+
+  ylim(0, 10000) +
   scale_y_log10()+
   ggtitle("Houses built in Fairfax County")
 ```
@@ -31,9 +32,9 @@ pre1900houses <- FFX_res_data %>%
 
 ggplot(data = pre1900houses,
        aes(x = year_built))+
-  geom_histogram()+ 
-  theme(axis.text.x=element_text(angle=90, hjust=1))+
-  ggtitle("Houses built before 1900 in Fairfax County")
+  geom_histogram(binwidth = 1)+ 
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+
 ```
 
 ```{r}
@@ -42,7 +43,7 @@ pre1900without <- houses_without_fireplaces %>%
   
 ggplot(data = pre1900without,
        aes(x = year_built))+
-  geom_histogram()+ 
+  geom_histogram(binwidth = 1)+ 
   theme(axis.text.x=element_text(angle=90, hjust=1))+
   ggtitle("Houses built before 1900 without fireplaces in Fairfax County")
 ```
@@ -53,7 +54,7 @@ pre1900with <- houses_with_fireplaces %>%
 
 ggplot(data = pre1900with,
        aes(x = year_built))+
-  geom_histogram()+
+  geom_histogram(binwidth = 1)+
   scale_x_continuous(breaks=1:1900)+
   scale_y_continuous(breaks=1:10)+
   theme(axis.text.x=element_text(angle=90, hjust=1))+
@@ -69,9 +70,10 @@ houses_1900_1945 <- FFX_res_data %>%
 
 ggplot(data = houses_1900_1945,
        aes(x = year_built))+
-  geom_histogram()+
-  scale_x_continuous(breaks=1:1945)
-  theme(axis.text.x=element_text(angle=90, hjust=1))
+  geom_histogram(binwidth = 1)+
+  scale_x_continuous(breaks=1:1945) +
+  theme(axis.text.x=element_text(angle=90, hjust=1)) +
+  ggtitle("Houses built between 1900 and 1945 in Fairfax County")
 ```
 
 ```{r echo = FALSE}
@@ -81,8 +83,8 @@ houses_1900_1945without <- houses_without_fireplaces %>%
   
 ggplot(data = houses_1900_1945without,
        aes(x = year_built))+
-  geom_histogram()+
-  scale_x_continuous(breaks=1:1945)
+  geom_histogram(binwidth = 1)+
+  scale_x_continuous(breaks=1:1945)+
   theme(axis.text.x=element_text(angle=90, hjust=1))+
   ggtitle("Houses built between 1900 and 1945 without fireplaces in Fairfax County")
 ```
@@ -94,13 +96,22 @@ houses_1900_1945with <- houses_with_fireplaces %>%
   
 ggplot(data = houses_1900_1945with,
        aes(x = year_built))+
-  geom_histogram()+
-  scale_x_continuous(breaks=1:1945)
+  geom_histogram(binwidth = 1)+
+  scale_x_continuous(breaks=1:1945) +
   theme(axis.text.x=element_text(angle=90, hjust=1))+
   ggtitle("Houses built between 1900 and 1945 with fireplaces in Fairfax County")
 ```
 
+```{r}
+post1945houses <- FFX_res_data %>%
+  filter(year_built >= 1945)
 
+ggplot(data = post1945houses,
+       aes(x = year_built))+
+  geom_histogram(binwidth = 1)+ 
+  theme(axis.text.x=element_text(angle=90, hjust=1))
+
+```
 
 ```{r}
 post1945without <- houses_without_fireplaces %>%
@@ -114,8 +125,6 @@ ggplot(data = post1945without,
   ggtitle("Houses built after 1945 without fireplaces in Fairfax County")
   
 ```
-
-
 
 
 ```{r}
