@@ -58,9 +58,19 @@ FFX_res_data <- FFXdata %>%
         sqft_living_area = SFLA) %>%
   mutate(decade = round_year(year_built, round_to = "decade")) %>%
   mutate(fireplaces = as.integer(fireplaces)) %>%
-  filter(year_built < 2100) %>%
-  tbl_df()
+  mutate(sqft_living_area = as.integer(sqft_living_area)) %>%
+  filter(year_built < 2100) 
+  tbl_df(FFX_res_data)
 ```
+
+Rename parcel_id to PIN to match with shape file from county. Done as a separate step because I didn't figure out I needed to do this until after data was transformed, and I don't want to rerun the data and risk breaking it late.
+
+```{r}
+FFX_res_data <- FFX_res_data %>%
+  rename(PIN = parcel_id)
+  
+```
+
 
 Start playing around with data plots.
 ```{r}
@@ -85,9 +95,11 @@ ggplot(data = early_homes,
   geom_point()
 #What about recent homes?
 recent_homes <- FFX_res_data %>%
-  filter(year_built > 1980) %>%
-
-
+  filter(year_built > 1980)
+ggplot(data = recent_homes,
+       aes(x = decade, y = sqft_living_area, size = fireplaces))+
+  geom_point()+
+  ylim(0, 7500)
 
 ```
 
@@ -97,4 +109,36 @@ Look for weird data.
 lots_o_fireplaces <- FFX_res_data %>%
   filter(fireplaces > 6)
 View(lots_o_fireplaces)  
+```
+
+Percentage of houses with and without fireplaces by decade.
+
+```{r}
+require(ggplot2)
+require(scales)
+
+ggplot(FFX_res_data, aes(x = fireplaces)) +
+  geom_bar(aes(y = (..count..)/sum(..count..)))
+```
+
+```{r}
+#ggplot(FFX_res_data, 
+ #      aes(x = decade))+
+#  geom_line(aes(y = (..count..)/sum(..count))) +
+#  aes(group = fireplaces)
+  
+```
+
+```{r}
+houses_with_fireplaces <- FFX_res_data %>%
+  filter(fireplaces > 0) 
+
+houses_without_fireplaces <- FFX_res_data %>%
+  filter(fireplaces == 0)
+c <- count(houses_without_fireplaces, decade)
+ggplot(houses_without_fireplaces,
+       aes(x = decade, y = c))+
+  geom_point()
+#this code does not work :-o !!!
+
 ```
